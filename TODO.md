@@ -21,6 +21,7 @@ Place all TODOs in here
   - Python
   - SQLite3
 - Fill up with TODOs from other files
+- Create general / how-to / development documentation
 
 ### Coding Style
 - Check out PEP8 and try to make code consistent
