@@ -1,0 +1,209 @@
+#:kivy 1.10.0
+#: import Window kivy.core.window.Window
+#:import SlideTransition kivy.uix.screenmanager.SlideTransition
+#:import FadeTransition kivy.uix.screenmanager.FadeTransition
+#:import WipeTransition kivy.uix.screenmanager.WipeTransition
+<ScreenLayout>:
+	orientation: 'vertical'
+	MainMenu:
+	Switcher:
+		name: "switcher"
+		id: switcher
+<Switcher>:
+	transition: SlideTransition(direction = 'down')
+    orientation: "vertical"
+    TodayScreen:
+		name: "todayscreen"
+		id: todayscreen
+	TodoForm:
+		name: "todoform"
+		id: todoform
+	SettingsPage:
+		name: "settingspage"
+		id: settingspage
+	Timetable:
+		name: "timetable"
+		id: timetable
+	Timer:
+		name: "timerpage"
+		id: timerpage
+<MainMenu>:
+	orientation: 'horizontal'
+	size_hint: 1, None
+	height: 50
+	Button:
+		text: "Today"
+		on_release: app.root.ids.switcher.current = "todayscreen"
+	Button:
+		text: "+ Todo"
+		on_release: 
+			todo_form = app.root.ids.switcher.ids.todoform
+			todo_form.newtodo = 0
+			todo_form.ids.title.text = "New todo"
+			todo_form.ids.description.text = ""
+			todo_form.ids.datepicker.text = "Today"
+			todo_form.ids.difficulty.text = "None set"
+			todo_form.ids.importance.text = "None set"
+			todo_form.ids.repeat.active = 0
+			app.root.ids.switcher.current = "todoform"
+	Button:
+		text: "Timetable"
+		on_release:
+			app.root.ids.switcher.current = "timetable"
+	Button:
+		text: "Timer"
+		on_release: app.root.ids.switcher.current = "timerpage"
+	Button:
+		text: "Settings"
+		on_release: 
+			#app.show()
+			app.root.ids.switcher.current = "settingspage"
+<Scroller>:
+	size_hint: None, None
+	size: 500, 420
+	pos_hint: {'center_x': .5, 'center_y': .5}
+	do_scroll_x: False
+<TodayButton>:
+	size: 300, 50
+<TodayScreen>:
+	on_parent: self.update()
+	Label:
+		text: "Today Screen"
+		pos_hint: {'center_x': .5, 'center_y': .95}
+	Scroller:
+		GridLayout:
+			cols: 1
+			padding: 10
+			spacing: 10
+			size_hint_y: None
+			width: 500
+			height: max(self.minimum_height, todobuttonlist.height)
+			id: todobuttonlist
+<TodoForm>:
+	Scroller:
+		GridLayout:
+			cols: 1
+			padding: 10
+			spacing: 10
+			size_hint_y: 1
+			width: 500
+			BoxLayout:
+				orientation: 'vertical'
+				TextInput:
+		            id: title
+		            size_hint: 1, None
+		            height: 50
+		            text: "New Todo"
+		            multiline: False
+		        Scroller:
+		        	size_hint: 1, 1
+		        	height: 200
+		        	id: descroll
+			        TextInput:
+			        	id: description
+			        	size_hint: 1, None
+			        	height: max(self.minimum_height, descroll.height)
+		        BoxLayout:
+		        	size_hint: 1, None
+		        	height: 50
+					Label:
+						size_hint_y: 1
+		                id: date
+		                text: "Date"
+		            DatePicker:
+		            	size_hint_y: 1
+		                id: datepicker
+		                pHint: 0.7, 0.6
+		            Button:
+		            	size_hint_y: 1
+		            	id: todaypicker
+		            	text: "Today"
+		            	on_press:
+		            		root.set_today()
+		            BoxLayout:
+		            	size_hint_y: 1
+		                orientation: "horizontal"
+		                Label:
+		                    text: "Repeat"
+		                Switch:
+		                    id: repeat
+		        BoxLayout:
+		            size_hint_x: 1
+		            Label:
+		                text: "Checklist area"
+		        BoxLayout:
+		            #size_hint: None, None
+		            Label:
+		                text: "Difficulty:"
+		            Spinner:
+		                values: ["Trivial", "Easy", "Medium", "Hard", "Punishing"]
+		                id: difficulty
+		                #on_text: root.select_diff(difficulty.text)
+		            Label:
+		                text: "Importance:"
+		            Spinner:
+		                values: ["Pipe dream", "Trivial", "No worries", "Ought to", "Got to", "Must"]
+		                id: importance
+		                #on_text: root.select_imp(importance.text)
+	# Sav, delete, complete buttons
+	BoxLayout:
+		orientation: 'horizontal'
+		BoxLayout:
+		Button:
+			id: savebutton
+			text: "Save"
+			size_hint: None, None
+			pos_hint: {'center_x': 0.5}
+			height: 30
+			on_release:
+				root.save()
+		Button:
+			id: deletebutton
+			text: "Delete"
+			size_hint: None, None
+			pos_hint: {'center_x': 0.5}
+			height: 30
+			on_release:
+				root.delete()
+		BoxLayout
+<Timetable>:
+	on_parent:
+		root.update()
+<Timer>:
+	GridLayout:
+		cols: 2
+		BoxLayout:
+			orientation: 'vertical'
+			id: timer
+			Label: 
+				text: "Timer"
+			TextInput:
+				text: "0:00"
+			Button:
+				text: "Start"
+				on_release:
+					root.run_timer()
+		BoxLayout:
+			orientation: 'vertical'
+			id: stopwatch
+			Label: 
+				text: "Stopwatch"
+			TextInput:
+				text: "0:00"
+			Button:
+				text: "Start"
+				on_release:
+					root.run_stopwatch()
+
+<SettingsPage>:
+	BoxLayout:
+		orientation: "vertical"
+		Label:
+			text: "Setting Page"
+		Spinner:
+			values: ["Fade", "Slide down", "Slide right", "Wipe"]
+			text: "Page transition"
+			id: transition_switcher
+			on_text: 
+				root.change_transition(transition_switcher.text)
+				

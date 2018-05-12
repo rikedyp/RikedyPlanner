@@ -11,20 +11,16 @@ Status: Early development
 RikedyPlanner is a cross-platform organiser app written in Kivy/Python  
 Check TODO.md for a list of tasks
 Check the wiki
-Use:
-- Does this
-- *Doesn't do this yet
-- Todos
-  - View todos for today, this week, this month, all (with /search)
-- + Todo
-  - Create todos
-- Timetable
-  - View timetable
-  - *Set up an N week timetable for integer N
-- Timer
-  - *Use a simple timer / stopwatch
-- Settings
-  - Change page transition
-  - *Set up colour / theme 
+Quickstart:
+ - Download and install dependencies (google it for now):
+ 	- Python 2.7 or 3.whatever
+ 	- Kivy (our version 1.10.0)
+ 	- SQLite3
+ - clone or download this repo
+ - `cd` into repo folder
+ - ```python
+python main.py
+```
+
 ### Installation Instructions
 Put installation instructions and dependencies here
