@@ -7,6 +7,7 @@ Place all TODOs in here
 - [Python CLI](#python-cli)
 - [Coding Style](#coding-style)
 - [Todos](#todos)
+- [Habits](#habits)
 - [Timetable](#timetable)
 - [Timer](#timer)
 - [Settings](#settings)
@@ -82,7 +83,6 @@ Started working on a python command line interface
 - 0.3 Generate apk that works 
 
 ### iOS App
-
 - Start iOS App
 
 ### Coding Style
@@ -92,14 +92,36 @@ Started working on a python command line interface
 
 ### Homepage
 - Change name to Homepage (currently 'Today')
+	- Maybe keep today
+- Just generally make the GUI make sense
+- Buttons have check-off button inside them
+- Buttons reveal menu on click?
+	- Add reminder
+	- Delete item
+	- Edit item
 - Automatically generated todo list
 	- sort todos by date / importance
-- Optional timed day planner 
+- Optional timed day planner / daily check-in
 	- e.g. plan 8 til 9 13 hrs
+	- Choose from your todos
 	- For each task, estimate how long you think it'll take
 	- Use in-built timers to measure how long it really takes
 	- Look at graphs of differences?
 	- Think of ways that data could be presented / if useful
+- Make a page w/ structure, this for home page?:
+	- Today:
+		Only must-dos dislpayed, once  enough have been checked off, top 3 most important due in the future
+	- This week:
+		Any due today but pushed off of Today by must-dos
+		Any due this week in order of importance
+	- This month:
+		Calendar-style lay out with key dates highlighted
+	- Next 3 months:
+		PC view only?
+	- This year:
+		List of main goals
+	- 5 years:
+		Get dreamy
 
 ### Todos
 - Set up repeat / reminders feature
@@ -115,15 +137,40 @@ Started working on a python command line interface
 - Implement reminders
 	- How to save, trigger?
 	- Notifications?
+- Sort function
+
+### Habits
+Once reward/punishment system decided on, implement habits
+Habits are like todos with habitica + / - system
 
 ### Calendar
 - All (use calendar_ui, calendar_data)
+- Events (similar to todos)
+	- Make it so events can be linked to todos?
+	- Link events to google calendar?
+	- Push notification / reminders on platform
+- Maybe something like a project plan assistant?
 
 ### Timetable
+- Current status: A grid of textinputs
+- Figure out implementation
+	- Setup popup
+		- How many (N) weeks to repeat?
+		- How many days per week?
+		- Starting on which day?
+		- Length of periods (should be fully customisable)
+			- base initial implementation on school 2 week 
+			- 2 periods - 15 min break - 1 period - lunch - 2 periods or something like that
+		- How many periods per day?
+	- Periods can be linked to todos or events / classes
 
 ### Timer
 
 ### Settings
+- Add more page transition options
+	- Can you create your own novel page transitions?
+- Colour / theme settings
+- kivy.config settings management
 
 ### Linux
 - Ubuntu desktop indicator
@@ -146,3 +193,5 @@ Started working on a python command line interface
 
 ### Licensing
 - Determine which license / notice files need to be included in the project (e.g. MIT)
+- Credit Derek Banas Kivy tutorial 5
+- Make sure to go find and credit other people who's code you stole
