@@ -175,6 +175,7 @@ Habits are like todos with habitica + / - system
 ### Linux
 - Ubuntu desktop indicator
   - Put in project documentation
+  - currently uses /usr/share/icons/RPlanner.png, get it to use icon in folder or have install method or something
 
 ### OS X
 
