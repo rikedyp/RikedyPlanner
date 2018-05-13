@@ -25,7 +25,7 @@ from kivy.uix.screenmanager import ScreenManager, Screen #, FadeTransition
 from kivy.core.window import Window
 from kivy.clock import Clock
 
-#Contemplating whether to add pygame dependency
+#Contemplating whether to add pygame dependency, good for playing audio apparently
 import pygame
 from pygame.locals import *
 import wave
@@ -82,6 +82,18 @@ class TodayScreen(Screen):
 	thisweek = {}
 	thismonth = {}
 	def update(self):
+		# TODO
+		# Search bar where focus initiates ability to scroll through (or search through) all todos
+		# Final design:
+				# display only <= 3 non-must TODOs at a time
+				# All must for this week display at top
+				# sub-sorted by importance
+			# 1 Todos on front page:
+			# 2 Overdue @ top in red
+			# 3 Due today sorted by importance (green, orange)
+			# 4 Due this week
+			# 5 Has a due date
+			# 6 No due date
 		# Get save data
 		file = Savedata()
 		# Clear button widgets for update
@@ -92,37 +104,6 @@ class TodayScreen(Screen):
 			self.ids.todobuttonlist.add_widget(todobutton)
 
 		file.sort('todos')
-
-	def sort(self):
-		# Load from database
-		file = Savedata()
-		# Dict to sort todos
-		todosort = {}
-		todosorted = {}
-		today = cal_data.today_date_list()
-		todaydate = str(today[0])+"."+str(today[1])+"."+str(today[2])
-		# List by item type
-		for todo in file.list('todos'):
-			# {date: todoid}
-			todosort[todo[3]] = todo[0]
-		# Sort todos by date 
-		for date in sorted(todosort.iterkeys()):
-			todosorted[date] = todosort[date]
-		# Put todos into 'past', 'today', 'future'
-		for date in todosorted:
-			print(date)
-			print(todaydate)
-			if date == todaydate:
-				print("Today--")
-		# Create a dict of todo[0]: todo[3]
-		# Sort dict
-		# Retrieve todos in order
-		# Today
-		today = datetime.now().strftime("%d.%m.%Y")
-			# Overdue (earliest first)
-			# Due today
-			# Due soon
-		return(todosort)
 
 class TimeTable(Screen):
 	N = NumericProperty(5) # N week timetable
