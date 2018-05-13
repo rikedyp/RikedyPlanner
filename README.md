@@ -17,6 +17,7 @@ Quickstart:
  - Download and install dependencies (google it for now):
  	- Python 2.7 or 3.whatever
  	- Kivy (our version 1.10.0)
+ 	- pygame (version unknown)
  	- SQLite3
  - clone or download this repo
  - `cd` into repo folder
