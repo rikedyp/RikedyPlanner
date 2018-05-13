@@ -1,5 +1,12 @@
 # TODO
 Place all TODOs in here
+There may be todos inside any .py or .kv files
+- 0.3 target version for this TODO
+- Can you contribute to any of the projects this planner uses to help them and us run smoother and/or on more devices?
+  - Kivy
+  - Python
+  - SQLite3
+
 ### CONTENTS
 - [General](#general)
 - [Save data](#save-data)
@@ -19,44 +26,41 @@ Place all TODOs in here
 - [Licensing](#licensing)
 
 ### General
-- Complete documentation for the project so far
-- Get todos from app
-- Put versioning info in docs 
-- Fill up with TODOs from other files
-- There may be todos inside any .py or .kv files
-- Can you contribute to any of the projects this planner uses to help them and us run smoother and/or on more devices?
-  - Kivy
-  - Python
-  - SQLite3
-- Create the wiki (project outline, how-tos, etc.)
+- 0.5 separate concerns (kv, py files)
+- 1.0 decide on file structure
+- 1.0 Complete documentation for the project so far
+- 1.0 Put versioning info in docs 
+- 1.0 Create the wiki (project outline, how-tos, etc.)
 	- Installation guide
-- Commit guide in the README?
-- Create logo / notification / window icon
-- Make the GUI look pretty
-- In-package documentation solution?
-- Gamification (points, reward, punishment, stats)
+- 1.0 Create logo / notification / window icon
+- 1.0 Make the GUI look pretty
+- 1.0 In-package documentation solution?
+- 1.0 Gamification (points, reward, punishment, stats)
 	- habits gain stats until they have been completed regularly for 1 year, then they become a trophy and you are no longer reminded,  can rescind your trophy is you fall out of habit accidentally etc.
-- Rocket chat?
+- 2.0 Rocket chat?
 - SQLite to json converter?
 
 ### Save data
-- Data syncs between installations on different platforms
+1.5 - Data syncs between installations on different platforms
 	- Online userbase?
 	- Database merging
 	- Initial idea:
 		Probably not scalable, but:
 		- HTTP request on connection to service on home wifi network (e.g. 10.0.0.3 or 192.168.0.19)
-- Try to keep stuff backwards compatible
-
+- 1.0 Decide: Try to keep stuff backwards compatible
+- 0.3 Sort function
+	- Sort by date (toggle overdue)
+		- Sort by importance
+		- Sort by difficulty
 ### Desktop App
-- Daily checkins
-- Autostart / notification panel indicator icon thing
+- 1.0 Daily checkins
+- 0.5 Autostart / notification panel indicator icon thing
 	- Ubuntu (test)
 	- Unity
 	- Windows
 	- OS X
-- Make stuff undoable?
-- Print out progress log in other formats pdf, latex, png, svg?
+- 0.5 Make stuff undoable?
+- 2.0 Print out progress log in other formats pdf, latex, png, svg?
 
 ### Python CLI
 Started working on a python command line interface 
@@ -86,8 +90,8 @@ Started working on a python command line interface
 - Start iOS App
 
 ### Coding Style
-- Check out PEP8 and try to make code consistent
-- Decide how to use " or '
+- 1.0 Check out PEP8 and try to make code consistent
+- 0.5 Decide how to use " or '
   - Current usage: "long string or reference (e.g. "filename.filetype")", 'tokenstring'
 
 ### Homepage

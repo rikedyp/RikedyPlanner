@@ -17,6 +17,8 @@ from kivy.properties import NumericProperty
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.button import Button
+from kivy.uix.checkbox import CheckBox
+from kivy.uix.label import Label
 from kivy.uix.textinput import TextInput
 from kivy.uix.scrollview import ScrollView
 from kivy.uix.screenmanager import ScreenManager, Screen #, FadeTransition
@@ -40,6 +42,9 @@ class Switcher(ScreenManager):
 	pass
 
 class MainMenu(BoxLayout):
+	pass
+
+class ButtonBox(BoxLayout):
 	pass
 
 class TodayButton(Button):
@@ -68,8 +73,14 @@ class TodayButton(Button):
 				todoform.ids.repeat.active = todo[6]
 		switcher.current = "todoform"
 
-class TodayScreen(Screen):
+class TodoCheck(CheckBox):
+	pass
 
+class TodayScreen(Screen):
+	overdue = {}
+	duetoday = {}
+	thisweek = {}
+	thismonth = {}
 	def update(self):
 		# Get save data
 		file = Savedata()
@@ -79,7 +90,8 @@ class TodayScreen(Screen):
 		for todo in file.list('todos'):
 			todobutton = TodayButton(text = todo[1], todoid = todo[0], size_hint = (1, None))
 			self.ids.todobuttonlist.add_widget(todobutton)
-		self.sort()
+
+		file.sort('todos')
 
 	def sort(self):
 		# Load from database
@@ -96,7 +108,6 @@ class TodayScreen(Screen):
 		# Sort todos by date 
 		for date in sorted(todosort.iterkeys()):
 			todosorted[date] = todosort[date]
-		print(todosorted)
 		# Put todos into 'past', 'today', 'future'
 		for date in todosorted:
 			print(date)
@@ -122,12 +133,8 @@ class TimeTable(Screen):
 		self.clear_widgets()
 		Tweek = GridLayout(cols = self.N, spacing = 10, padding = 10, height = Window.height)
 		for i in range(self.N):
-			string = "i " + str(i)
-			print(string)
 			Tday = BoxLayout(orientation = 'vertical')
 			for j in range(self.n):
-				string = "j " + str(j)
-				print(string)
 				string = "Period " + str(j)
 				Tperiod = TextInput(text = string, size_hint_y = 0.2)
 				Tday.add_widget(Tperiod)

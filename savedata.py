@@ -10,9 +10,10 @@
 #	Current checklists (shopping / todo lists)
 
 import sys
-import json
+#import json
 import uuid
 import sqlite3 
+from datetime import datetime
 
 class Savedata():
 
@@ -73,6 +74,40 @@ class Savedata():
 		else:
 			print("not listable item")
 		return all_rows
+
+	def get_today(self):
+		year = datetime.now().strftime('%Y')
+		month = int(datetime.now().strftime('%m'))
+		day = int(datetime.now().strftime('%d'))
+		return [year,month,day]
+
+	def sort(self, thing):
+		# Sort todos by date, marking overdue items
+		# Get things (todo, reminder etc.)
+		things = self.list(thing)
+		thingsort = {}
+		thingsorted = {}
+		# Get current date / time?
+		today = self.get_today()
+		todaydate = str(today[0])+"."+str(today[1])+"."+str(today[2])
+		# Fill dict with date: id from things
+		for thing in things:
+			# {date: todoid}
+			thingsort[thing[3]] = int(thing[0])
+		def splitdate(date):
+			splitup = date.split('.')
+			print(splitup)
+			return int(splitup[0]), int(splitup[1]), int(splitup[2])
+		# Sort todos by date 
+		for date in sorted(thingsort, key = splitdate):
+			thingsorted[date] = thingsort[date]
+			print(date)
+			print(thingsorted[date])
+		# Put todos into 'past', 'today', 'future'
+		for date in thingsorted:
+			if date == todaydate:
+				print("Today--")
+				print(todaydate)
 
 	def save(self, thing = None):
 		# method to save data to file
@@ -309,5 +344,5 @@ class Checklist():
 		pass
 
 if __name__ == "__main__":
-	print("Cannot run this file (please read the docs)")
-	sys.exit()
+	file = Savedata()
+	file.sort('todos')
