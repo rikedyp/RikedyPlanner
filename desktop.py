@@ -21,6 +21,12 @@ from kivy.uix.textinput import TextInput
 from kivy.uix.scrollview import ScrollView
 from kivy.uix.screenmanager import ScreenManager, Screen #, FadeTransition
 from kivy.core.window import Window
+from kivy.clock import Clock
+
+#Contemplating whether to add pygame dependency
+import pygame
+from pygame.locals import *
+import wave
 
 # Calendar widget + date picker
 from calendar_ui import CalendarWidget, DatePicker, cal_data
@@ -107,7 +113,7 @@ class TodayScreen(Screen):
 			# Due soon
 		return(todosort)
 
-class Timetable(Screen):
+class TimeTable(Screen):
 	N = NumericProperty(5) # N week timetable
 	n = NumericProperty(8) # n periods per day
 
@@ -137,13 +143,75 @@ class Timetable(Screen):
 		# Choose a todo or school class
 		# Events automatically enter TT
 
+class TimerPageManager(ScreenManager):
+	pass
+
+class TimerPage(Screen):
+	pass
+
+class StopWatch(Screen):
+	seconds = NumericProperty(0)
+	minutes = NumericProperty(0)
+	hours = NumericProperty(0)
+	days = NumericProperty(0)
+	def increment_seconds(self, interval):
+		self.seconds += interval
+	def increment_minutes(self, interval):
+	    self.minutes += 1
+	    self.seconds = 0
+	def increment_hours(self, interval):
+		self.hours += 1
+		self.minutes = 0
+		self.seconds = 0
+	def start(self): 
+	    Clock.unschedule(self.increment_seconds)
+	    Clock.unschedule(self.increment_minutes)
+	    Clock.unschedule(self.increment_hours)
+	    Clock.schedule_interval(self.increment_hours, 3600)
+	    Clock.schedule_interval(self.increment_seconds, 0.001)
+	    Clock.schedule_interval(self.increment_minutes, 60)
+	def stop(self):
+	    Clock.unschedule(self.increment_seconds)
+	    Clock.unschedule(self.increment_minutes)
+	    Clock.unschedule(self.increment_hours)
+	def reset(self):
+		self.seconds = 0
+		self.minutes = 0
+		self.hours = 0
+		self.days = 0
+
 class Timer(Screen):
-	Timeleft = 0
-	def run_timer(self):
-		print("run timer")
-		pass
-	def run_stopwatch(self):
-		print("run stopwatch")
+	
+	#load a sound
+	sound_path = "sofpad-undersampled.wav"
+	sound = wave.open(sound_path)
+	frequency = sound.getframerate()
+	#init game engine with audio
+	#pygame.init()    
+	pygame.mixer.init(frequency=frequency)       
+	pygame.mixer.music.load(sound_path)
+	# Set up timer variables	
+	oldtime = NumericProperty(0)
+	time = NumericProperty(20)
+	seconds = NumericProperty(0)
+	minutes = NumericProperty(0)
+	hours = NumericProperty(0)
+	days = NumericProperty(0)
+	def decrement_time(self, interval):
+	    self.time -= interval
+	    if self.time <= 0:
+			self.time = 0
+			self.stop()
+			#playback
+			pygame.mixer.music.play()
+	def start(self): 
+		self.time = float(self.ids.textbox.text)
+		self.oldtime = self.time
+		Clock.unschedule(self.decrement_time)
+		Clock.schedule_interval(self.decrement_time, .1)
+	def stop(self):
+	    Clock.unschedule(self.decrement_time)
+	    pygame.mixer.music.stop()
 
 class SettingsPage(Screen):
 	def change_transition(self, choice):

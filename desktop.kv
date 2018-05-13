@@ -11,7 +11,6 @@
 		id: switcher
 <Switcher>:
 	transition: SlideTransition(direction = 'down')
-    orientation: "vertical"
     TodayScreen:
 		name: "todayscreen"
 		id: todayscreen
@@ -21,10 +20,10 @@
 	SettingsPage:
 		name: "settingspage"
 		id: settingspage
-	Timetable:
+	TimeTable:
 		name: "timetable"
 		id: timetable
-	Timer:
+	TimerPage:
 		name: "timerpage"
 		id: timerpage
 <MainMenu>:
@@ -166,34 +165,103 @@
 			on_release:
 				root.delete()
 		BoxLayout
-<Timetable>:
+<TimeTable>:
 	on_parent:
 		root.update()
+<TimerPageManager>:
+	transition: SlideTransition(direction = 'down')
+	Timer:
+	StopWatch:
+<TimerPage>:
+	BoxLayout:
+		orientation: 'vertical'
+		BoxLayout:
+			orientation: 'horizontal'
+			size_hint: 1, None
+			height: 50
+			Button:
+				text: "Countdown"
+				on_press:
+					root.ids.tpm.current = "timer"
+			Button:
+				text: "StopWatch"
+				on_press:
+					root.ids.tpm.current = "stopwatch"
+		TimerPageManager:
+			id: tpm
+			Timer:
+				name: "timer"
+			StopWatch
+				name: "stopwatch"
 <Timer>:
-	GridLayout:
-		cols: 2
+	BoxLayout:
+		orientation: 'vertical'
+		id: timer
+		TextInput:
+			id: textbox
+			text: str(round(root.time,2))
+        	font_size: 100
 		BoxLayout:
-			orientation: 'vertical'
-			id: timer
-			Label: 
-				text: "Timer"
-			TextInput:
-				text: "0:00"
+			orientation: 'horizontal'
+			Button:
+				text: "Start"
+				# Choose an image and uncomment:
+	            #background_down: 'button_pressed.png'
+	            #background_normal: 'button_normal.png'
+				on_press:
+					root.start()
+			Button:
+				text: "Stop"
+				on_press:
+					root.stop()
+			Button:
+				text: "Reset"
+				on_release:
+					root.time = root.oldtime
+<StopWatch>:
+	BoxLayout:
+		orientation: 'vertical'
+		id: stopwatch
+		GridLayout:
+			cols: 3
+			BoxLayout:
+				orientation: 'vertical'
+				Label:
+					text: "Hours"
+				TextInput:
+					id: h
+					font_size: 15
+					text: str(int(root.hours))
+			BoxLayout:
+				orientation: 'vertical'
+				Label:
+					text: "Minutes"
+				TextInput:
+					id: m
+					font_size: 40
+					text: str(int(root.minutes))
+			BoxLayout:
+				orientation: 'vertical'
+				Label:
+					text: "Seconds"
+				TextInput:
+					id: s
+					font_size: 20
+					text: str(round(root.seconds, 3))
+		BoxLayout:
+			orientation: 'horizontal'
 			Button:
 				text: "Start"
 				on_release:
-					root.run_timer()
-		BoxLayout:
-			orientation: 'vertical'
-			id: stopwatch
-			Label: 
-				text: "Stopwatch"
-			TextInput:
-				text: "0:00"
+					root.start()
 			Button:
-				text: "Start"
-				on_release:
-					root.run_stopwatch()
+				text: "Stop"
+				on_press:
+					root.stop()
+			Button:
+				text: "Reset"
+				on_press:
+					root.reset()
 
 <SettingsPage>:
 	BoxLayout:

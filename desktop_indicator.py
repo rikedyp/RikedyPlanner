@@ -20,15 +20,15 @@ from threading import Thread
 from desktop import *
 
 APPINDICATOR_ID = 'RikedyPlanner_Indicator'
+APPINDICATOR_ICON = os.path.abspath('RPlanner.png')
 #show_window = 0
 from kivy.config import Config
 Config.set('kivy', 'exit_on_escape', 'true')
 #Config.set('log_level', 'trace', None)
 Config.set('kivy', 'log_level', 'warning')
-
 class Indicator():
     def Indicate(self):
-        indicator = appindicator.Indicator.new(APPINDICATOR_ID, os.path.abspath('/usr/share/icons/RPlanner.png'), appindicator.IndicatorCategory.SYSTEM_SERVICES)
+        indicator = appindicator.Indicator.new(APPINDICATOR_ID, APPINDICATOR_ICON, appindicator.IndicatorCategory.SYSTEM_SERVICES)
         indicator.set_status(appindicator.IndicatorStatus.ACTIVE)
         indicator.set_menu(self.build_menu())
         notify.init(APPINDICATOR_ID)
@@ -52,7 +52,7 @@ class Indicator():
         DesktopApp().show()
 
     def fetch_joke(self):
-        request = Request('http://api.icndb.com/jokes/random?limitTo=[nerdy]')
+        request = Request("http://api.icndb.com/jokes/random?firstName=Jada&lastName=None")
         response = urlopen(request)
         joke = json.loads(response.read())['value']['joke']
         return joke
