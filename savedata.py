@@ -25,6 +25,7 @@ class Savedata():
 	def load(self):
 		# TODO: maybe include changeable default path
 		#		save + recover duedate as python datetime
+		# Make difficulty, importance integer
 		try:
 			# Load or create database file
 			db = sqlite3.connect('savefile.db')
@@ -76,38 +77,37 @@ class Savedata():
 		return all_rows
 
 	def get_today(self):
-		year = datetime.now().strftime('%Y')
+		year = int(datetime.now().strftime('%Y'))
 		month = int(datetime.now().strftime('%m'))
 		day = int(datetime.now().strftime('%d'))
+		todaydate = str(year)+"."+str(month)+"."+str(day)
 		return [year,month,day]
 
 	def sort(self, thing):
 		# Sort todos by date, marking overdue items
+		# TODO - Can probably cut initial for loop since it just makes a new dict
+			# change variable names (things)
 		# Get things (todo, reminder etc.)
 		things = self.list(thing)
 		thingsort = {}
 		thingsorted = {}
-		# Get current date / time?
+		# Get current date / time
 		today = self.get_today()
-		todaydate = str(today[0])+"."+str(today[1])+"."+str(today[2])
-		# Fill dict with date: id from things
+		# Fill dict with id: properties from things
 		for thing in things:
-			# {date: todoid}
-			thingsort[thing[3]] = int(thing[0])
-		def splitdate(date):
-			splitup = date.split('.')
-			print(splitup)
-			return int(splitup[0]), int(splitup[1]), int(splitup[2])
+			# TODO - retrieve importance, difficulty as numeric values
+			# Decide: store importance, difficulty as strings and convert here, or store as numbers and convert in GUI?
+			# {todoid: date, importance, difficulty, title}
+			thingsort[thing[0]] = [thing[3], thing[5], thing[4], thing[1]]
+		def getkeys(thingdata):
+			keys = []
+			date = thingdata[1][0].split('.')
+			# keys = [YEAR,MONTH,DAY,IMPORTANCE,DIFFICULTY]
+			keys = [int(date[0]), int(date[1]), int(date[2]), thingdata[1][1], thing[1],[2]]
+			return keys
 		# Sort todos by date 
-		for date in sorted(thingsort, key = splitdate):
-			thingsorted[date] = thingsort[date]
-			print(date)
-			print(thingsorted[date])
-		# Put todos into 'past', 'today', 'future'
-		for date in thingsorted:
-			if date == todaydate:
-				print("Today--")
-				print(todaydate)
+		thingsorted = sorted(thingsort.items(), key = getkeys)
+		return thingsorted
 
 	def save(self, thing = None):
 		# method to save data to file

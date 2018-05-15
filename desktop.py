@@ -83,27 +83,42 @@ class TodayScreen(Screen):
 	thismonth = {}
 	def update(self):
 		# TODO
-		# Search bar where focus initiates ability to scroll through (or search through) all todos
-		# Final design:
-				# display only <= 3 non-must TODOs at a time
-				# All must for this week display at top
-				# sub-sorted by importance
-			# 1 Todos on front page:
-			# 2 Overdue @ top in red
-			# 3 Due today sorted by importance (green, orange)
-			# 4 Due this week
-			# 5 Has a due date
-			# 6 No due date
+			# Search bar where focus initiates ability to scroll through (or search through) all todos
+			# Final design:
+					# display only <= 3 non-must TODOs at a time
+					# All must for this week display at top
+					# sub-sorted by importance
+				# 1 Todos on front page:
+				# 2 Overdue @ top in red
+				# 3 Due today sorted by importance (green, orange)
+				# 4 Due this week
+				# 5 Has a due date
+				# 6 No due date
 		# Get save data
 		file = Savedata()
 		# Clear button widgets for update
 		self.ids.todobuttonlist.clear_widgets()
 		# Add a buttons for todos in database
-		for todo in file.list('todos'):
-			todobutton = TodayButton(text = todo[1], todoid = todo[0], size_hint = (1, None))
-			self.ids.todobuttonlist.add_widget(todobutton)
-
-		file.sort('todos')
+		#todos = file.list('todos')
+		for todo in file.sort('todos'):
+			duedate = todo[1][0].split('.')
+			duedate = [int(duedate[0]),int(duedate[1]),int(duedate[2])]
+			today = file.get_today()
+			if duedate < today:
+				print("Overdue todo")
+				todobuttontext = todo[1][3] + "   " + str(todo[1][0])
+				todobutton = TodayButton(color = [1, 0.2, 0, 0.8], text = todobuttontext, todoid = int(todo[0]), size_hint = (1, None))
+				self.ids.todobuttonlist.add_widget(todobutton)
+			elif duedate == today:
+				print("Due today todo")
+				todobuttontext = todo[1][3] + "   " + str(todo[1][0])
+				todobutton = TodayButton(color = [0, 1, 0.3, 0.8], text = todobuttontext, todoid = int(todo[0]), size_hint = (1, None))
+				self.ids.todobuttonlist.add_widget(todobutton)
+			else:
+				print("Future or none")
+				todobuttontext = todo[1][3] + "   " + str(todo[1][0])
+				todobutton = TodayButton(text = todobuttontext, todoid = int(todo[0]), size_hint = (1, None))
+				self.ids.todobuttonlist.add_widget(todobutton)
 
 class TimeTable(Screen):
 	N = NumericProperty(5) # N week timetable

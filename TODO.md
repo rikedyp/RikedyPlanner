@@ -17,6 +17,7 @@ There may be todos inside any .py or .kv files
 - [Habits](#habits)
 - [Timetable](#timetable)
 - [Timer](#timer)
+- [Checklists](#checklists)
 - [Settings](#settings)
 - [Linux](#linux)
 - [OS X](#os-x)
@@ -29,7 +30,7 @@ There may be todos inside any .py or .kv files
 - 0.5 separate concerns (kv, py files)
 - 1.0 decide on file structure
 - 1.0 Complete documentation for the project so far
-- 1.0 Put versioning info in docs 
+- 1.0 Put versioning info in docs
 - 1.0 Create the wiki (project outline, how-tos, etc.)
 	- Installation guide
 - 1.0 Create logo / notification / window icon
@@ -48,10 +49,7 @@ There may be todos inside any .py or .kv files
 		Probably not scalable, but:
 		- HTTP request on connection to service on home wifi network (e.g. 10.0.0.3 or 192.168.0.19)
 - 1.0 Decide: Try to keep stuff backwards compatible
-- 0.3 Sort function
-	- Sort by date (toggle overdue)
-		- Sort by importance
-		- Sort by difficulty
+
 ### Desktop App
 - 1.0 Daily checkins
 - 0.5 Autostart / notification panel indicator icon thing
@@ -61,9 +59,12 @@ There may be todos inside any .py or .kv files
 	- OS X
 - 0.5 Make stuff undoable?
 - 2.0 Print out progress log in other formats pdf, latex, png, svg?
+- 0.3 Calendar_ui, calendar_data
+	- current date active button
+	- today choose functionailty
 
 ### Python CLI
-Started working on a python command line interface 
+Started working on a python command line interface
 - TODOs
 	- Sort / list todos [todo menu]
 	- Edit todo
@@ -84,7 +85,7 @@ Started working on a python command line interface
 - 0.3 Turn portrait
 - Put build instructions in docs
 - Make https://github.com/renpytom/rapt-pygame-example work in python 3.5 (is this still of interest?)
-- 0.3 Generate apk that works 
+- 0.3 Generate apk that works
 
 ### iOS App
 - Start iOS App
@@ -163,12 +164,15 @@ Habits are like todos with habitica + / - system
 		- How many days per week?
 		- Starting on which day?
 		- Length of periods (should be fully customisable)
-			- base initial implementation on school 2 week 
+			- base initial implementation on school 2 week
 			- 2 periods - 15 min break - 1 period - lunch - 2 periods or something like that
 		- How many periods per day?
 	- Periods can be linked to todos or events / classes
 
 ### Timer
+
+### Checklists
+- 1.0 Some kind of page / entity for things like shopping lists
 
 ### Settings
 - Add more page transition options
@@ -198,5 +202,10 @@ Habits are like todos with habitica + / - system
 
 ### Licensing
 - Determine which license / notice files need to be included in the project (e.g. MIT)
+	- python
+	- kivy
+	- sqlite3
+	- pygame
 - Credit Derek Banas Kivy tutorial 5
 - Make sure to go find and credit other people who's code you stole
+- Calendar button / widget calendar_ui, calendar_data
