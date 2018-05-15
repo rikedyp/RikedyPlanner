@@ -48,10 +48,7 @@ There may be todos inside any .py or .kv files
 		Probably not scalable, but:
 		- HTTP request on connection to service on home wifi network (e.g. 10.0.0.3 or 192.168.0.19)
 - 1.0 Decide: Try to keep stuff backwards compatible
-- 0.3 Sort function
-	- Sort by date (toggle overdue)
-		- Sort by importance
-		- Sort by difficulty
+
 ### Desktop App
 - 1.0 Daily checkins
 - 0.5 Autostart / notification panel indicator icon thing
@@ -61,6 +58,9 @@ There may be todos inside any .py or .kv files
 	- OS X
 - 0.5 Make stuff undoable?
 - 2.0 Print out progress log in other formats pdf, latex, png, svg?
+- 0.3 Calendar_ui, calendar_data
+	- current date active button
+	- today choose functionailty
 
 ### Python CLI
 Started working on a python command line interface 
@@ -198,5 +198,10 @@ Habits are like todos with habitica + / - system
 
 ### Licensing
 - Determine which license / notice files need to be included in the project (e.g. MIT)
+	- python
+	- kivy
+	- sqlite3
+	- pygame
 - Credit Derek Banas Kivy tutorial 5
 - Make sure to go find and credit other people who's code you stole
+- Calendar button / widget calendar_ui, calendar_data
