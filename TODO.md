@@ -208,4 +208,8 @@ Habits are like todos with habitica + / - system
 	- pygame
 - Credit Derek Banas Kivy tutorial 5
 - Make sure to go find and credit other people who's code you stole
+<<<<<<< HEAD
 - Calendar button / widget calendar_ui, calendar_data
+=======
+- Calendar button / widget calendar_ui, calendar_data
+>>>>>>> e6fcc595302b79466e4d28238eedb4398fb43bc8
