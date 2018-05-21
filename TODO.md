@@ -27,6 +27,12 @@ There may be todos inside any .py or .kv files
 - [Licensing](#licensing)
 
 ### General
+- 1.0 Daily checkins  
+	Choose from Morning, Evening (set times), neither or both  
+		Format:  
+			Daily habit review  
+			Todos completed (for satisfaction) - soft maybe on this
+			Upcoming tasks?
 - 1.0 Figure out error handling / Exception best practice
 - 0.5 separate concerns (kv, py files)
 - 1.0 decide on file structure
@@ -58,11 +64,11 @@ There may be todos inside any .py or .kv files
 	- Unity
 	- Windows
 	- OS X
-- 0.5 Make stuff undoable?
+- 0.5 Decide: Make stuff undoable? 
+- 1.0 Decide on input form layout
+	- Description box that automatically resizes
+	- Expandable checklist (sub-todos)
 - 2.0 Print out progress log in other formats pdf, latex, png, svg?
-- 0.3 Calendar_ui, calendar_data
-	- current date active button
-	- today choose functionailty
 
 ### Python CLI
 Started working on a python command line interface

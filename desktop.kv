@@ -38,8 +38,8 @@
 		on_release: 
 			todo_form = app.root.ids.switcher.ids.todoform
 			todo_form.newtodo = 0
-			todo_form.ids.title.text = "New todo"
-			todo_form.ids.description.text = ""
+			todo_form.ids.title.text = "New todo title"
+			todo_form.ids.description.text = "Description... "
 			todo_form.ids.datepicker.text = "Whenever"
 			todo_form.ids.importance.text = "Trivial"
 			todo_form.ids.difficulty.text = "Trivial"
@@ -58,8 +58,7 @@
 			#app.show()
 			app.root.ids.switcher.current = "settingspage"
 <Scroller>:
-	size_hint: None, None
-	size: 500, 420
+	size_hint: 1, 1
 	pos_hint: {'center_x': .5, 'center_y': .5}
 	do_scroll_x: False
 <ButtonBox>:
@@ -78,108 +77,104 @@
 			padding: 10
 			spacing: 10
 			size_hint_y: None
-			width: 500
+			#width: 500
 			height: max(self.minimum_height, todobuttonlist.height)
 			id: todobuttonlist
 <TodoForm>:
-	Scroller:
-		GridLayout:
-			cols: 1
-			padding: 10
-			spacing: 10
-			size_hint_y: 1
-			width: 500
-			BoxLayout:
-				orientation: 'vertical'
-				TextInput:
-		            id: title
-		            height: 50
-		            text: "New Todo"
-		            multiline: False
-		        Scroller:
-		        	height: 200
-		        	id: descroll
-			        TextInput:
-			        	id: description
-			        	size_hint: 1, None
-			        	height: max(self.minimum_height, descroll.height)
-		        BoxLayout:
-		        	size_hint: 1, None
-		        	height: 50
-		        	BoxLayout:
-		        		orientation: 'vertical'
-		        		size_hint_y: 1
-		        		BoxLayout:
-							Label:
-				                id: date
-				                text: "Date"
-				            DatePicker:
-				                id: datepicker
-				                text: 'Whenever'
-				                pHint: 0.7, 0.6
-				        BoxLayout:
-				            Button:
-				            	id: todaypicker
-				            	text: 'Today'
-				            	on_press:
-				            		root.set_date('today')
-				            Button:
-				            	id: wheneverpicker
-				            	text: 'Whenever'
-				            	on_press:
-				            		root.set_date('whenever')
-				            Button:
-				            	id: todaypicker
-				            	text: 'ASAP'
-				            	on_press:
-				            		root.set_date('asap')
-		            BoxLayout:
-		                orientation: "horizontal"
-		                Label:
-		                    text: "Repeat"
-		                Switch:
-		                    id: repeat
-		        BoxLayout:
-		            size_hint_x: 1
-		            Label:
-		                text: "Checklist area"
-		        BoxLayout:
-		            #size_hint: None, None
-		            Label:
-		                text: "Importance:"
-		            Spinner:
-		            	text: "Pipe dream"
-		                values: ["Pipe dream", "Trivial", "No worries", "Ought to", "Got to", "Must"]
-		                id: importance
-		                on_text: root.select_imp(importance.text)
-		            Label:
-		                text: "Difficulty:"
-		            Spinner:
-		            	text: "Trivial"
-		                values: ["Trivial", "Easy", "Medium", "Hard", "Punishing"]
-		                id: difficulty
-		                on_text: root.select_diff(difficulty.text)
-	# Sav, delete, complete buttons
 	BoxLayout:
-		orientation: 'horizontal'
+		orientation: 'vertical'
+		size_hint_y: 1
+		Scroller:
+			GridLayout:
+			# Title, description, duedate, etc.
+				cols: 1
+				padding: 10
+				spacing: 10
+				size_hint_y: 1
+				width: 700
+				height: self.minimum_height
+				BoxLayout:
+					orientation: 'vertical'
+					TextInput:
+			            id: title
+			            text: "New Todo"
+			            multiline: False
+			        Scroller:
+			        	id: descroll
+				        TextInput:
+				        	id: description
+				        	height: max(self.minimum_height, descroll.height)
+			        BoxLayout:
+			        	BoxLayout:
+			        		orientation: 'vertical'
+			        		BoxLayout:
+								Label:
+					                id: date
+					                text: "Date"
+					            DatePicker:
+					                id: datepicker
+					                text: 'Whenever'
+					                pHint: 0.7, 0.6
+					        BoxLayout:
+					            Button:
+					            	id: todaypicker
+					            	text: 'Today'
+					            	on_press:
+					            		root.set_date('today')
+					            Button:
+					            	id: wheneverpicker
+					            	text: 'Whenever'
+					            	on_press:
+					            		root.set_date('whenever')
+					            Button:
+					            	id: todaypicker
+					            	text: 'ASAP'
+					            	on_press:
+					            		root.set_date('asap')
+			            BoxLayout:
+			                orientation: "horizontal"
+			                Label:
+			                    text: "Repeat"
+			                Switch:
+			                    id: repeat
+			        BoxLayout:
+			            Label:
+			                text: "Checklist area"
+			        BoxLayout:
+			            #size_hint: None, None
+			            Label:
+			                text: "Importance:"
+			            Spinner:
+			            	text: "Pipe dream"
+			                values: ["Pipe dream", "Trivial", "No worries", "Ought to", "Got to", "Must"]
+			                id: importance
+			                on_text: root.select_imp(importance.text)
+			            Label:
+			                text: "Difficulty:"
+			            Spinner:
+			            	text: "Trivial"
+			                values: ["Trivial", "Easy", "Medium", "Hard", "Punishing"]
+			                id: difficulty
+			                on_text: root.select_diff(difficulty.text)
+		# Sav, delete, complete buttons
 		BoxLayout:
-		Button:
-			id: savebutton
-			text: "Save"
-			size_hint: None, None
-			pos_hint: {'center_x': 0.5}
-			height: 30
-			on_release:
-				root.save()
-		Button:
-			id: deletebutton
-			text: "Delete"
-			size_hint: None, None
-			pos_hint: {'center_x': 0.5}
-			height: 30
-			on_release:
-				root.delete()
-		BoxLayout
+			size_hint_y: 0.2
+			height: 50
+			orientation: 'horizontal'
+			BoxLayout:
+			Button:
+				id: savebutton
+				text: "Save"
+				pos_hint: {'center_x': 0.5}
+				on_release:
+					root.save()
+			Button:
+				id: deletebutton
+				text: "Delete"
+				pos_hint: {'center_x': 0.5}
+				on_release:
+					root.delete()
+			BoxLayout: # To fill the space
 <TimeTable>:
 	on_parent:
 		root.update()

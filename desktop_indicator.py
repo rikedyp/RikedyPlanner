@@ -55,7 +55,7 @@ class Indicator():
 
     def fetch_joke(self):
         # TODO - get broader joke API 
-        request = Request("http://api.icndb.com/jokes/random?firstName=Jada&lastName=None")
+        request = Request("http://api.icndb.com/jokes/random?firstName=Hardeep&lastName=Sidhu")
         response = urlopen(request)
         joke = json.loads(response.read())['value']['joke']
         return joke
