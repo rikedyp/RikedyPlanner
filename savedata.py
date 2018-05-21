@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 # Save data class
 # Class to create, update and delete sqlite3 entries
 # savefile.db contains full user save file
@@ -10,8 +12,7 @@
 #	Current checklists (shopping / todo lists)
 
 import sys
-#import json
-import uuid
+#import uuid
 import sqlite3 
 from datetime import datetime
 
@@ -36,8 +37,8 @@ class Savedata():
 				CREATE TABLE IF NOT EXISTS
 				todos(id INTEGER PRIMARY KEY, title TEXT,
 				description TEXT, duedate TEXT, repeat INTEGER,
-				repinfo TEXT, difficulty TEXT,
-				importance TEXT, completed INTEGER)
+				repinfo TEXT, difficulty INTEGER,
+				importance INTEGER, completed INTEGER)
 			''')
 			cursor.execute('''
 				CREATE TABLE IF NOT EXISTS
@@ -45,9 +46,6 @@ class Savedata():
 				description TEXT, duedate TEXT, location TEXT)
 			''')
 			db.commit()
-			cursor.execute('''
-				SELECT title, description, duedate from todos
-			''')
 		except Exception as e:
 			# Roll back changes if something goes wrong
 			db.rollback()
@@ -85,28 +83,38 @@ class Savedata():
 
 	def sort(self, thing):
 		# Sort todos by date, marking overdue items
-		# TODO - Can probably cut initial for loop since it just makes a new dict
-			# change variable names (things)
+		# TODO 
+			# change variable name 'thing/s' to 'item/s'
+			# put asap first and whenever last
 		# Get things (todo, reminder etc.)
 		things = self.list(thing)
+		#print(things)
 		thingsort = {}
 		thingsorted = {}
 		# Get current date / time
 		today = self.get_today()
-		# Fill dict with id: properties from things
-		for thing in things:
-			# TODO - retrieve importance, difficulty as numeric values
-			# Decide: store importance, difficulty as strings and convert here, or store as numbers and convert in GUI?
-			# {todoid: date, importance, difficulty, title}
-			thingsort[thing[0]] = [thing[3], thing[5], thing[4], thing[1]]
 		def getkeys(thingdata):
+			# Keys to sort things by date, importance, difficulty
 			keys = []
-			date = thingdata[1][0].split('.')
-			# keys = [YEAR,MONTH,DAY,IMPORTANCE,DIFFICULTY]
-			keys = [int(date[0]), int(date[1]), int(date[2]), thingdata[1][1], thing[1],[2]]
-			return keys
+			# TODO: Check error handling here
+			if thingdata[3] == 'Whenever':
+				# Put these items last
+				return ["u'zzzz"]
+			elif thingdata[3] == 'ASAP':
+				# Put these items first
+				return [-1]
+			elif type(thingdata[3]) is unicode:
+				# keys = [YEAR, MONTH, DAY, IMPORTANCE, DIFFICULTY]
+				date = thingdata[3].split('.')
+				return [int(date[0]), int(date[1]), int(date[2]), thingdata[4], thingdata[5]]
+			else:
+				print("Savedata->Sort->Getkeys->Wrong data type for date")
 		# Sort todos by date 
-		thingsorted = sorted(thingsort.items(), key = getkeys)
+		if things != []:
+			thingsorted = sorted(things, key = getkeys)
+			#print(thingsorted)
+		else:
+			return None
 		return thingsorted
 
 	def save(self, thing = None):
@@ -226,16 +234,6 @@ class Todo():
 		finally:
 			db.close()
 
-	def sort(self):
-		# Sort todos by:
-		#	ignore completed
-		#	duedate (closest today)
-		# 	importance (highest)
-		# 	difficulty (highest)
-		#	include all duedate = today
-		#		+ other sorted
-		#	return top3/today for display
-		pass
 	# Set reminder
 	def set_reminder(self):
 		pass
@@ -309,16 +307,6 @@ class Event():
 		finally:
 			db.close()
 
-	def sort(self):
-		# Sort todos by:
-		#	ignore completed
-		#	duedate (closest today)
-		# 	importance (highest)
-		# 	difficulty (highest)
-		#	include all duedate = today
-		#		+ other sorted
-		#	return top3/today for display
-		pass
 	# Set reminder
 	def set_reminder(self):
 		pass
@@ -345,4 +333,5 @@ class Checklist():
 
 if __name__ == "__main__":
 	file = Savedata()
-	file.sort('todos')
+	for thing in file.sort('todos'):
+		print(thing)

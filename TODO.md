@@ -27,6 +27,7 @@ There may be todos inside any .py or .kv files
 - [Licensing](#licensing)
 
 ### General
+- 1.0 Figure out error handling / Exception best practice
 - 0.5 separate concerns (kv, py files)
 - 1.0 decide on file structure
 - 1.0 Complete documentation for the project so far
@@ -48,9 +49,9 @@ There may be todos inside any .py or .kv files
 	- Initial idea:
 		Probably not scalable, but:
 		- HTTP request on connection to service on home wifi network (e.g. 10.0.0.3 or 192.168.0.19)
-- 1.0 Decide: Try to keep stuff backwards compatible
 
 ### Desktop App
+- Kivy settings setup script or instructions in docs
 - 1.0 Daily checkins
 - 0.5 Autostart / notification panel indicator icon thing
 	- Ubuntu (test)
@@ -82,10 +83,10 @@ Started working on a python command line interface
 - HABITs
 
 ### Android App
-- 0.3 Turn portrait
+- 0.5 Turn portrait
 - Put build instructions in docs
 - Make https://github.com/renpytom/rapt-pygame-example work in python 3.5 (is this still of interest?)
-- 0.3 Generate apk that works
+- 1.0 Generate apk that works
 
 ### iOS App
 - Start iOS App
@@ -170,6 +171,7 @@ Habits are like todos with habitica + / - system
 	- Periods can be linked to todos or events / classes
 
 ### Timer
+- 1.0 Fix crash when non-float put into countdown timer
 
 ### Checklists
 - 1.0 Some kind of page / entity for things like shopping lists
@@ -182,6 +184,7 @@ Habits are like todos with habitica + / - system
 
 ### Linux
 - Ubuntu desktop indicator
+  - Change menu item "Today" to "Show"
   - Put in project documentation
   - currently uses /usr/share/icons/RPlanner.png, get it to use icon in folder or have install method or something
 
@@ -208,8 +211,4 @@ Habits are like todos with habitica + / - system
 	- pygame
 - Credit Derek Banas Kivy tutorial 5
 - Make sure to go find and credit other people who's code you stole
-<<<<<<< HEAD
 - Calendar button / widget calendar_ui, calendar_data
-=======
-- Calendar button / widget calendar_ui, calendar_data
->>>>>>> e6fcc595302b79466e4d28238eedb4398fb43bc8

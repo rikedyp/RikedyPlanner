@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 # RikedyPlanner Desktop Application
 # Python 2.7.12
 # Kivy 1.10.0
@@ -68,8 +70,8 @@ class TodayButton(Button):
 				todoform.ids.title.text = todo[1]
 				todoform.ids.description.text = todo[2]
 				todoform.ids.datepicker.text = str(todo[3])
-				todoform.ids.difficulty.text = str(todo[4])
-				todoform.ids.importance.text = str(todo[5])
+				todoform.ids.difficulty.text = todoform.diffdict[todo[4]]
+				todoform.ids.importance.text = todoform.impdict[todo[5]]
 				todoform.ids.repeat.active = todo[6]
 		switcher.current = "todoform"
 
@@ -85,40 +87,62 @@ class TodayScreen(Screen):
 		# TODO
 			# Search bar where focus initiates ability to scroll through (or search through) all todos
 			# Final design:
-					# display only <= 3 non-must TODOs at a time
-					# All must for this week display at top
+					# display only <= 3 non-must TODOs at a time except:
+						# All must for this this week or today display at top
 					# sub-sorted by importance
 				# 1 Todos on front page:
-				# 2 Overdue @ top in red
+				# 2 Overdue + 'ASAP' @ top in red
 				# 3 Due today sorted by importance (green, orange)
 				# 4 Due this week
 				# 5 Has a due date
-				# 6 No due date
+				# 6 No due date / 'Whenever'
 		# Get save data
 		file = Savedata()
 		# Clear button widgets for update
 		self.ids.todobuttonlist.clear_widgets()
 		# Add a buttons for todos in database
-		#todos = file.list('todos')
-		for todo in file.sort('todos'):
-			duedate = todo[1][0].split('.')
-			duedate = [int(duedate[0]),int(duedate[1]),int(duedate[2])]
-			today = file.get_today()
-			if duedate < today:
-				print("Overdue todo")
-				todobuttontext = todo[1][3] + "   " + str(todo[1][0])
-				todobutton = TodayButton(color = [1, 0.2, 0, 0.8], text = todobuttontext, todoid = int(todo[0]), size_hint = (1, None))
-				self.ids.todobuttonlist.add_widget(todobutton)
-			elif duedate == today:
-				print("Due today todo")
-				todobuttontext = todo[1][3] + "   " + str(todo[1][0])
-				todobutton = TodayButton(color = [0, 1, 0.3, 0.8], text = todobuttontext, todoid = int(todo[0]), size_hint = (1, None))
-				self.ids.todobuttonlist.add_widget(todobutton)
-			else:
-				print("Future or none")
-				todobuttontext = todo[1][3] + "   " + str(todo[1][0])
-				todobutton = TodayButton(text = todobuttontext, todoid = int(todo[0]), size_hint = (1, None))
-				self.ids.todobuttonlist.add_widget(todobutton)
+		todos = file.sort('todos')
+		if todos != None:
+			for todo in todos:
+				duedate = todo[3]
+				# TODO - maybe do dates as list and unicode otherwise
+				if duedate != None:
+					# Dated todos
+					today = file.get_today()
+					today = str(today[0])+"."+str(today[1])+"."+str(today[2])
+					if duedate == 'ASAP':
+						todobuttontext = todo[1]
+						todobutton = TodayButton(color = [1, 0.2, 0, 0.8], text = todobuttontext, todoid = int(todo[0]), size_hint = (1, None))
+						self.ids.todobuttonlist.add_widget(todobutton)
+					elif duedate < today:
+						todobuttontext = todo[1]
+						todobutton = TodayButton(color = [1, 0.6, 0, 0.8], text = todobuttontext, todoid = int(todo[0]), size_hint = (1, None))
+						self.ids.todobuttonlist.add_widget(todobutton)
+					elif duedate == today:
+						todobuttontext = todo[1]
+						todobutton = TodayButton(color = [0, 1, 0.3, 0.8], text = todobuttontext, todoid = int(todo[0]), size_hint = (1, None))
+						self.ids.todobuttonlist.add_widget(todobutton)
+					else:
+						todobuttontext = todo[1]
+						todobutton = TodayButton(color = [0, 0.8, 0.8, 0.8], text = todobuttontext, todoid = int(todo[0]), size_hint = (1, None))
+						self.ids.todobuttonlist.add_widget(todobutton)
+					# if duedate == 'Whenever':
+					# 	print("Got whenever")
+					# 	# put these last
+					# 	todobuttontext = todo[1]
+					# 	todobutton = TodayButton(color = [0, 0.8, 0.8, 0.8], text = todobuttontext, todoid = int(todo[0]), size_hint = (1, None))
+					# 	self.ids.todobuttonlist.add_widget(todobutton, len(self.ids.todobuttonlist.children))
+					# elif duedate == 'ASAP':
+					# 	print("Got ASAP")
+					# 	# put these first
+					# 	todobuttontext = todo[1]
+					# 	todobutton = TodayButton(color = [1, 0.2, 0.3, 0.8], text = todobuttontext, todoid = int(todo[0]), size_hint = (1, None))
+					# 	self.ids.todobuttonlist.add_widget(todobutton)
+					# else:			
+		else:
+			nonelabel = Label(text = "Nothing to do")
+			self.ids.todobuttonlist.add_widget(nonelabel)
+
 
 class TimeTable(Screen):
 	N = NumericProperty(5) # N week timetable
@@ -234,9 +258,15 @@ class TodoForm(Screen):
 	newtodo = NumericProperty(0)
 	# ID of todo to be edited
 	editid = NumericProperty(0)
-
+	# Importance, difficulty saved as int for easier sorting
+	# Dicts here to restore semantic representation
+	impdict = {0: 'Pipe dream', 1: 'Trivial', 2: 'No worries', 3: 'Ought to', 4: 'Got to', 5: 'Must'}
+	diffdict = {0: 'Trivial', 1: 'Easy', 2: 'Medium', 3: 'Hard', 4: 'Punishing'}
+	importance = NumericProperty(0)
+	difficulty = NumericProperty(0)
 	def save(self):
 		# TODO: Can generalise to Event, reminder etc?
+		# Convert difficulty, importance to integer
 		if self.newtodo == 0:
 			file = Savedata()
 			# Create a new todo in database and retrieve its ID
@@ -244,9 +274,9 @@ class TodoForm(Screen):
 			data = {
 				'title': self.ids.title.text,
 	            'description': self.ids.description.text,
-	            'duedate': self.ids.datepicker.text, # Gotta work out python datetime methods
-	            'difficulty': self.ids.difficulty.text,
-	            'importance': self.ids.importance.text,
+	            'duedate': self.ids.datepicker.text,
+	            'difficulty': self.difficulty, 
+	            'importance': self.importance,
 	            'repeat': self.ids.repeat.active
 			}
 			Todo().edit(newtodoid, data)
@@ -257,9 +287,9 @@ class TodoForm(Screen):
 			data = {
 				'title': self.ids.title.text,
                 'description': self.ids.description.text,
-                'duedate': self.ids.datepicker.text, # Gotta work this out next
-                'difficulty': self.ids.difficulty.text,
-                'importance': self.ids.importance.text,
+                'duedate': self.ids.datepicker.text, 
+                'difficulty': self.difficulty, 
+                'importance': self.importance,
                 'repeat': self.ids.repeat.active
 			}
 			Todo().edit(self.editid, data)
@@ -271,10 +301,41 @@ class TodoForm(Screen):
 		Todo().delete(self.editid)
 		self.parent.current = "todayscreen"
 
-	def set_today(self):
+	def set_date(self, date):
 		# TODO - change active button on calendar
-		today_list = cal_data.today_date_list()
-		self.ids.datepicker.text = str(today_list[0])+"."+str(today_list[1])+"."+str(today_list[2])
+		if date == "today":
+			today_list = cal_data.today_date_list()
+			self.ids.datepicker.text = str(today_list[0])+"."+str(today_list[1])+"."+str(today_list[2])
+		if date == "whenever":
+			self.ids.datepicker.text = "Whenever"
+		if date == "asap":
+			self.ids.datepicker.text = "ASAP"
+
+	def select_imp(self, importance):
+		if importance == 'Pipe dream':
+			self.importance = 5
+		elif importance == 'Trivial':
+			self.importance = 4
+		elif importance == 'No worries':
+			self.importance = 3
+		elif importance == 'Ought to':
+			self.importance = 2
+		elif importance == 'Got to':
+			self.importance = 1
+		elif importance == 'Must':
+			self.importance = 0
+
+	def select_diff(self, difficulty):
+		if difficulty == 'Trivial':
+			self.difficulty = 4
+		elif difficulty == 'Easy':
+			self.difficulty = 3
+		elif difficulty == 'Medium':
+			self.difficulty = 2
+		elif difficulty == 'Hard':
+			self.difficulty = 1
+		elif difficulty == 'Punishing':
+			self.difficulty = 0
 
 class Scroller(ScrollView):
 	pass

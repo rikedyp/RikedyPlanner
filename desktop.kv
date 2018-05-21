@@ -40,9 +40,9 @@
 			todo_form.newtodo = 0
 			todo_form.ids.title.text = "New todo"
 			todo_form.ids.description.text = ""
-			todo_form.ids.datepicker.text = "Today"
-			todo_form.ids.difficulty.text = "None set"
-			todo_form.ids.importance.text = "None set"
+			todo_form.ids.datepicker.text = "Whenever"
+			todo_form.ids.importance.text = "Trivial"
+			todo_form.ids.difficulty.text = "Trivial"
 			todo_form.ids.repeat.active = 0
 			app.root.ids.switcher.current = "todoform"
 	Button:
@@ -93,12 +93,10 @@
 				orientation: 'vertical'
 				TextInput:
 		            id: title
-		            size_hint: 1, None
 		            height: 50
 		            text: "New Todo"
 		            multiline: False
 		        Scroller:
-		        	size_hint: 1, 1
 		        	height: 200
 		        	id: descroll
 			        TextInput:
@@ -108,22 +106,34 @@
 		        BoxLayout:
 		        	size_hint: 1, None
 		        	height: 50
-					Label:
-						size_hint_y: 1
-		                id: date
-		                text: "Date"
-		            DatePicker:
-		            	size_hint_y: 1
-		                id: datepicker
-		                pHint: 0.7, 0.6
-		            Button:
-		            	size_hint_y: 1
-		            	id: todaypicker
-		            	text: "Today"
-		            	on_press:
-		            		root.set_today()
+		        	BoxLayout:
+		        		orientation: 'vertical'
+		        		size_hint_y: 1
+		        		BoxLayout:
+							Label:
+				                id: date
+				                text: "Date"
+				            DatePicker:
+				                id: datepicker
+				                text: 'Whenever'
+				                pHint: 0.7, 0.6
+				        BoxLayout:
+				            Button:
+				            	id: todaypicker
+				            	text: 'Today'
+				            	on_press:
+				            		root.set_date('today')
+				            Button:
+				            	id: wheneverpicker
+				            	text: 'Whenever'
+				            	on_press:
+				            		root.set_date('whenever')
+				            Button:
+				            	id: todaypicker
+				            	text: 'ASAP'
+				            	on_press:
+				            		root.set_date('asap')
 		            BoxLayout:
-		            	size_hint_y: 1
 		                orientation: "horizontal"
 		                Label:
 		                    text: "Repeat"
@@ -136,17 +146,19 @@
 		        BoxLayout:
 		            #size_hint: None, None
 		            Label:
-		                text: "Difficulty:"
-		            Spinner:
-		                values: ["Trivial", "Easy", "Medium", "Hard", "Punishing"]
-		                id: difficulty
-		                #on_text: root.select_diff(difficulty.text)
-		            Label:
 		                text: "Importance:"
 		            Spinner:
+		            	text: "Pipe dream"
 		                values: ["Pipe dream", "Trivial", "No worries", "Ought to", "Got to", "Must"]
 		                id: importance
-		                #on_text: root.select_imp(importance.text)
+		                on_text: root.select_imp(importance.text)
+		            Label:
+		                text: "Difficulty:"
+		            Spinner:
+		            	text: "Trivial"
+		                values: ["Trivial", "Easy", "Medium", "Hard", "Punishing"]
+		                id: difficulty
+		                on_text: root.select_diff(difficulty.text)
 	# Sav, delete, complete buttons
 	BoxLayout:
 		orientation: 'horizontal'

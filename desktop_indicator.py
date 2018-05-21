@@ -1,4 +1,6 @@
-# This code is an example for a tutorial on Ubuntu Unity/Gnome AppIndicators:
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+# This code is ripped from an example for a tutorial on Ubuntu Unity/Gnome AppIndicators:
 # http://candidtim.github.io/appindicator/2014/09/13/ubuntu-appindicator-step-by-step.html
 
 import os
@@ -36,7 +38,7 @@ class Indicator():
 
     def build_menu(self):
         menu = gtk.Menu()
-        item_today = gtk.MenuItem('Today')
+        item_today = gtk.MenuItem('Show')
         item_today.connect('activate', self.showToday)
         menu.append(item_today)
         item_joke = gtk.MenuItem('Joke')
@@ -52,6 +54,7 @@ class Indicator():
         DesktopApp().show()
 
     def fetch_joke(self):
+        # TODO - get broader joke API 
         request = Request("http://api.icndb.com/jokes/random?firstName=Jada&lastName=None")
         response = urlopen(request)
         joke = json.loads(response.read())['value']['joke']
